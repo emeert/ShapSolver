@@ -81,5 +81,4 @@ This project is licensed under the MIT License — see the [LICENSE](./LICENSE) 
 
 ---
 
-Let me know if you want a CONTRIBUTING.md, example input/output samples, or a diagram to visualize the shape flow. This project is a strong foundation for your geometry canon.
 
