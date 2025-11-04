@@ -11,9 +11,10 @@ void menuPromt()
 {
     cout << "****************" << endl;
     cout << "ShapeSolver 1.1" << endl;
-    cout << "By Elijah Meert" << endl; 
+    cout << "bY Elijah Meert" << endl; 
     cout << "****************" << endl;
 }
+
 
 void triangleGraphic(int triangle_Type)
 {
@@ -115,6 +116,14 @@ double D2length( const double pt1[2], const double pt2[2])
     return length; 
 }
 
+double D2Slope(double x1, double y1, double x2, double y2)
+{
+    double m = (y2-y1)/(x2-x1);
+    return m; 
+}
+
+
+
 /**
  * @brief Solves and displays geometric properties of a triangle defined by three 2D vertices.
  *
@@ -127,8 +136,9 @@ double D2length( const double pt1[2], const double pt2[2])
  * - Centroid coordinates
  * - Interior angle calculation via Law of Cosines
  * - Triangle classification by sides and angles
- ** Future enhancements may include:
  * - Computation of special points (incenter, circumcenter, orthocenter)
+ ** Future enhancements may include:
+
  * - Medians and angle bisectors
  *
  * @note Requires a valid implementation of D2length() to compute side lengths.
@@ -199,6 +209,77 @@ void triangleSolver()
     //Determine the coordinates of the centroid
     double xg = (triangle[0][0]+triangle[1][0]+triangle[2][0])/3;
     double yg = (triangle[0][1]+triangle[1][1]+triangle[2][1])/3;
+
+
+
+
+    //Determine the coordinates of the angle Bisector
+    /*
+    2. Use the Angle Bisector Theorem:
+        The internal angle bisector from vertex A meets side BC at a point D such that:
+        BD/DC=AB/AC
+        if A(x1,y1), B(x2,y2) and C(x3,y3)
+
+        then the angle bisector from vertext A(x1,y1)
+
+        dAx = (x2*AC_x3*AB)/(AC+AB)
+        dAy = (y2*AC+y3*AB)/(AC+AB)  
+    */
+    
+   
+ // Triangle vertices
+double aX = triangle[0][0];
+double aY = triangle[0][1];
+
+double bX = triangle[1][0];
+double bY = triangle[1][1];
+
+double cX = triangle[2][0];
+double cY = triangle[2][1];
+
+// Angle bisector point D on side BC
+double dAx = (bX * AC + cX * AB) / (AC + AB);
+double dAy = (bY * AC + cY * AB) / (AC + AB);
+
+
+// Angle bisector point E on side AC
+double eBx = (aX * BC + cX * AB) / (BC + AB);
+double eBy = (aY * BC + cY * AB) / (BC + AB);
+
+
+// Angle bisector point F on side AB
+double fCx = (aX * BC + bX * AC) / (BC + AC);
+double fCy = (aY * BC + bY * AC) / (BC + AC);
+
+//Finding the Incenter using a weighted average method 
+/*
+    Ix = (a*aX +b*bX+c*cX)/(a+b+c)
+    Iy = (a*aY+b*bY+c*cY)/(a+b+c)
+
+    where 
+    a = length of side BC
+    b = length of side AC 
+    c = Length of side AB
+
+    aX and aY are as defined above the coordinates of vertex A so A(x,y) = (aX,aY)
+    bX and bY are as defined above the coordinates of vetex B so B(x,y) = (bX, bY)
+    cX and cY are as defined above the coordinates of vertex C so C(x,y) = (cX, cY)
+*/
+
+// a+b+c is the perimeter 
+// a is also BC 
+double a = BC;
+// b is also AC
+double b = AC; 
+// c is also AB
+double c = AB; 
+
+//Incenter 
+double Ix = (a*aX + b*bX + c*cX)/perimeter;
+double Iy = (a*aY+ b*bY+ c*cY)/perimeter;
+
+
+
         /*
             A
             *
@@ -252,7 +333,179 @@ void triangleSolver()
         {   
             angleType = right;
         }
+
+
+
+
+    //Orthocenter 
+    // The orthocenter is the intersection of the altitudes of the triangle. 
+    //Slope of AB
+    double mABSlope = D2Slope(aX,aY,bX,bY);
+    double altmABslope;
+    //Slope of  Altitude from vertex C perpendicular to AB
+    if(mABSlope != 0)
+    {
+        altmABslope = -1.0/mABSlope; 
+    }
+    
+    //Slope of AC
+    double mACslope = D2Slope(aX,aY,cX,cY);
+    //Slope of  Altitude from vertex B perpendicular to AC
+    double altmACslope = -1.0/mACslope; 
+
+    //Slope of BC
+    double mBCSlope = D2Slope(bX,bY,cX,cY);
+    //Slope of  Altitude from vertex B perpendicular to AC
+    double altmBCSlope = -1.0/mBCSlope; 
+
+    // We pick two of these to solve thier intersection 
+    /*
+
+    y = m1(x-x1)+y1 
+    y = m2(x-x2)+y2
+    ....
+
+    An elaborate calculation later gives us 
+        x = (m1x1 -m2x2+y2-y1)/(m1 -m2)
+
+        we can take m1 and m2 to be slopes of the altitudes and x1,y1 and x2,y2 to be the leading vertex of each altitude. 
+    
+        The leading vertex of the Altitude that is perpendicular to AB is C with slope altABSlope
+        x1 = cX , y1 = cY  m1 = altABSlope
+
+        The leading vertex of the Altitude that is perpendicular to AC is B with slope altACSlope
+
+        x2 = bX, y2 = bY m2 = altmACslope
+
+        so 
+        x = (altmABslope*cX -altACSlope*bX + cY-bY)/(altABSlope -altACSlope)
+
+        to make calculation slightly easier 
+        OxNum = (altmABslope*cX -altACSlope*bX + cY-bY)
+        OxDen = (altABSlope -altACSlope)
+
+        Ox = OxNum/OxDen
+
+        
+    */
+
+
+          //circumcenter 
+
+        /*
+            The circumcenter is the intersection of the perpendicular bisectors 
+
+            The perpendicular bisectors are the perpendicular lines that pass throught the midpoints of the triangles sides. 
+
+            lets call the midpoints of each side of triangle ABC  r, s, t respectfully. 
+
+            then r  is the midpoint of AB , s is the midpoint of AC and t is the midpoint of BC 
+
+            rX = (aX+bX)/2
+            ry = (aY+bY)/2
+        */
        
+       //r  is the midpoint of AB
+       double rX = (aX+bX)/2;
+       double rY = (aY+bY)/2;
+
+       //s is the midpoint of AC 
+       double sX = (aX+cX)/2;
+       double sY = (aY+cY)/2;
+
+       //t is the midpoint of BC
+       double tX = (bX+cX)/2;
+       double tY = (bY + cY)/2;
+
+       //we use AC and AB for our intersection. 
+        double circumXNum; 
+        double circumXDen;
+        double circumX; 
+        double circumY;
+        
+    
+       
+
+        double orthX, orthY;
+
+        if (angleType == right) 
+        {
+            // Orthocenter is at the right-angle vertex
+            if (fabs(angle_A - 90.0) < 1e-6)
+            {
+                orthX = aX;
+                orthY = aY;
+                // Circumcenter is midpoint of hypotenuse BC
+                circumX = (bX + cX) / 2.0;
+                circumY = (bY + cY) / 2.0;
+            } 
+            else if (fabs(angle_B - 90.0) < 1e-6)
+            {
+                orthX = bX;
+                orthY = bY;
+                // Circumcenter is midpoint of hypotenuse AC
+                circumX = (aX + cX) / 2.0;
+                circumY = (aY + cY) / 2.0;
+            } 
+            else 
+            {
+                orthX = cX;
+                orthY = cY;
+                // Circumcenter is midpoint of hypotenuse AB
+                circumX = (aX + bX) / 2.0;
+                circumY = (aY + bY) / 2.0;
+            }
+        }
+        else
+        {
+            // General case: compute orthocenter from altitudes
+            double orthXNum = altmABslope * cX - altmACslope * bX + cY - bY;
+            double orthXDen = altmABslope - altmACslope;
+
+            if (fabs(mABSlope) < 1e-6) 
+            {
+                // AB is horizontal → altitude from C is vertical
+                orthX = cX;
+                orthY = altmACslope * (orthX - bX) + bY;
+            }
+            else 
+            {
+                // General case
+                    orthX = orthXNum / orthXDen;
+                    orthY = altmABslope * (orthX - cX) + cY;
+            }
+
+
+           
+
+            // Circumcenter from perpendicular bisectors
+            double circumXNum = altmACslope * sX - altmABslope * rX + rY - sY;
+            double circumXDen = altmACslope - altmABslope;
+
+            if (fabs(mABSlope) < 1e-6) 
+            {
+                // AB is horizontal → perpendicular bisector is vertical
+                circumX = rX;
+                circumY = altmABslope * (circumX - rX) + rY;
+            }else if (fabs(aX-cX)< 1e-6)
+            {
+                // AC is vertical → bisector is horizontal
+                circumX = altmABslope * (circumY - rY) + rX;
+                circumY = sY;
+            }
+            else
+            {
+                circumX = circumXNum / circumXDen;
+                circumY = altmABslope * (circumX - rX) + rY;
+            }
+            
+        }
+
+
+  
+
+
+
       
 
     cout << "You selected a triangle with the following vertices:  A = ("<< triangle[0][0] << "," << triangle[0][1]<< "), B = (" << triangle[1][0] 
@@ -328,7 +581,27 @@ else
     }
     cout << endl;
    
+
+
+    //Angle Bisectors
+    cout << "Angle bisector point D on side BC would be located at ("<< dAx << "," << dAy << ")" << endl;
+    cout << endl;
+    cout << "Angle bisector point E on side AC would be located at ("<< eBx << "," << eBy << ")" << endl;
+    cout << endl;
+    cout << "Angle bisector point F on side AB would be located at ("<< fCx << "," << fCy << ")" << endl;
+    cout << endl;
+
+
+    cout << "The incenter of such a triangle would be located at ("<< Ix << "," << Iy << ")" << endl;
+    cout << endl;
+
     cout << "The centroid of such a triangle would be located at ("<< xg << "," << yg << ")" << endl;
+    cout << endl;
+
+    cout << "The orthocenter of such a triangle would be located at (" << orthX << ", " << orthY << ")" << endl;
+    cout << endl;
+
+    cout << "The circumcenter of such a triangle would be located at (" << circumX << ", " << circumY << ")" << endl;
     cout << endl;
 
 }
