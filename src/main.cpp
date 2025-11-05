@@ -1,6 +1,7 @@
 #include <iostream>
-#include "menuSystem.hpp"
-#include "triangle.hpp"
+#include "shapes/triangle.hpp"
+#include "common/d2Common.hpp"
+#include "menu/menuSystem.hpp"
 // Future: #include "square.hpp", "circle.hpp", etc.
 
 int main() {
