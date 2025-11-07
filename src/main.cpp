@@ -1,5 +1,6 @@
 #include <iostream>
 #include "shapes/triangle.hpp"
+#include "shapes/qaudrilateral.hpp"
 #include "common/d2Common.hpp"
 #include "menu/menuSystem.hpp"
 // Future: #include "square.hpp", "circle.hpp", etc.
@@ -11,11 +12,19 @@ int main() {
     int shapeChoice;
     std::cin >> shapeChoice;
 
-    switch (shapeChoice) {
+    switch (shapeChoice) 
+    {
         case 1:
-            triangleSolver();
+            {
+                triangleSolver();
+            }
             break;
-        // case 2: squareSolver(); break;
+
+        case 2:
+            {
+                quadSolver();
+            }
+            break;
         // case 3: rectangleSolver(); break;
         // case 4: circleSolver(); break;
         default:
