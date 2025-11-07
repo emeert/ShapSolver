@@ -1,7 +1,7 @@
 
-# 📐 ShapeSolver
+# 📐 PointShapeSolver
 
-**ShapeSolver** is a modular C++ program that calculates geometric properties of 2D and 3D shapes using only vertex coordinates. It demonstrates how multidimensional arrays and mathematical formulas can transform raw spatial input into structured geometric consequence.
+**PointShapeSolver** is a modular C++ program that calculates geometric properties of 2D and 3D shapes using only vertex coordinates. It demonstrates how multidimensional arrays and mathematical formulas can transform raw spatial input into structured geometric consequence.
 
 ---
 
@@ -13,7 +13,7 @@ This project explores:
 - The application of **formulas** to calculate area, perimeter, volume, height, and center points
 - A **menu-driven interface** that guides users through shape selection and vertex input
 
-ShapeSolver began as a simple exercise and evolved into a principled geometry engine — modeling spatial consequence through modular design.
+PointShapeSolver began as a simple exercise and evolved into a principled geometry engine — modeling spatial consequence through modular design.
 
 ---
 
@@ -72,11 +72,11 @@ All 3D shapes are defined by their vertices (ordered triples).
 1. Clone the repository
 2. Compile the program using a C++ compiler:
    ```bash
-   g++ -o shapesolver main.cpp
+   g++ -o PointShapeSolver main.cpp
    ```
 3. Run the executable:
    ```bash
-   ./shapesolver
+   ./PointShapeSolver
    ```
 4. Follow the prompts to select a shape and enter its vertices
 
